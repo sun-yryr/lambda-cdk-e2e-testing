@@ -1,0 +1,28 @@
+version: "3"
+
+tasks:
+  install:
+    desc: install cdk dependencies
+    dir: ./cdk
+    cmds:
+      - npm install
+  build:
+    desc: build cdk & lambda
+    deps:
+      - install
+    dir: ./cdk
+    cmds:
+      - npm run cdk -- synth
+    sources:
+      - bin/**/*.ts
+      - lib/**/*.ts
+      - package.json
+      - package-lock.json
+    generates:
+      - cdk.out/**/*
+  start-api:
+    desc: start api
+    deps:
+      - build
+    cmds:
+      - sam local start-api -t cdk/cdk.out/CdkStack.template.json

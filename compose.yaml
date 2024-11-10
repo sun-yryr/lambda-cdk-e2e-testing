@@ -1,0 +1,9 @@
+services:
+  localstack:
+    image: localstack/localstack
+    volumes:
+      - ./localstack-init.sh:/etc/localstack/init/ready.d/localstack-init.sh
+    ports:
+      - 4566:4566
+    healthcheck:
+      test: ["CMD", "awslocal", "s3", "ls"]
