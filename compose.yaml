@@ -7,3 +7,7 @@ services:
       - 4566:4566
     healthcheck:
       test: ["CMD", "awslocal", "s3", "ls"]
+  registry:
+    image: registry:2
+    ports:
+      - 5000:5000

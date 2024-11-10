@@ -34,7 +34,13 @@ architecture-beta
 
 ## run
 
-```
-docker compose up -d --wait
-task start-api
+```sh
+$ aws configure --profile localstack-docker
+AWS Access Key ID [None]: 000000000000
+AWS Secret Access Key [None]: dummy
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+$ export AWS_PROFILE=localstack-docker
+$ docker compose up -d --wait
+$ task start-api
 ```

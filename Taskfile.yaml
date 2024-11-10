@@ -3,14 +3,14 @@ version: "3"
 tasks:
   install:
     desc: install cdk dependencies
-    dir: ./cdk
+    dir: cdk
     cmds:
       - npm install
-  build:
+  build_template:
     desc: build cdk & lambda
     deps:
       - install
-    dir: ./cdk
+    dir: cdk
     cmds:
       - npm run cdk -- synth
     sources:
@@ -18,11 +18,23 @@ tasks:
       - lib/**/*.ts
       - package.json
       - package-lock.json
+      - ../lambda/python/*.py
     generates:
       - cdk.out/**/*
+  build_push_image:
+    desc: build lambda runtime base image
+    dir: lambda/python
+    cmds:
+      - docker build -t localhost:5000/sam-test-python:latest .
+      - docker push localhost:5000/sam-test-python:latest
   start-api:
     desc: start api
     deps:
-      - build
+      - build_template
+      - build_push_image
     cmds:
-      - sam local start-api -t cdk/cdk.out/CdkStack.template.json
+      - |
+        sam local start-api \
+          -t cdk/cdk.out/CdkStack.template.json \
+          --docker-network lambda-cdk-e2e-testing_default \
+          --invoke-image LambdaPython=localhost:5000/sam-test-python:latest
