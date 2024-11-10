@@ -19,7 +19,7 @@ architecture-beta
 
 - [x] CDK で Lambda + API Gateway を構築する
 - [x] SAMで API Gateway を立てる
-- [ ] SAM で起動した Lambda から LocalStack の S3 にアクセスする
+- [x] SAM で起動した Lambda から LocalStack の S3 にアクセスする
 
 ## requirements
 
